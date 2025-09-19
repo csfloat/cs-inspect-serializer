@@ -2,16 +2,17 @@
   "name": "@csfloat/cs2-inspect-serializer",
   "version": "1.0.0",
   "description": "Lightweight serializer for CS2 inspect links",
-  "license": "MIT",
+  "homepage": "https://github.com/csfloat/cs2-inspect-serializer",
+  "bugs": {
+    "url": "https://github.com/csfloat/cs2-inspect-serializer/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/csfloat/cs2-inspect-serializer.git"
   },
+  "license": "MIT",
   "author": "CSFloat",
-  "homepage": "https://github.com/csfloat/cs2-inspect-serializer",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "type": "commonjs",
   "exports": {
     ".": {
       "import": {
@@ -23,6 +24,11 @@
         "default": "./dist/index.js"
       }
     }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "test": "tests"
   },
   "files": [
     "dist"
@@ -43,6 +49,7 @@
     "tsup": "8.5",
     "typescript": "^5.9.2"
   },
+  "module": "dist/index.mjs",
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
