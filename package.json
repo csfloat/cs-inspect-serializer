@@ -36,18 +36,7 @@
   "scripts": {
     "build": "tsup",
     "test": "jest",
-    "protoc": "npx protoc --ts_out src --proto_path protos protos/econ.proto"
-  },
-  "devDependencies": {
-    "@protobuf-ts/plugin": "^2.11.1",
-    "@types/jest": "^30.0.0",
-    "buffer": "^6.0.3",
-    "crc-32": "^1.2.2",
-    "jest": "^30.1.3",
-    "ts-jest": "^29.4.3",
-    "ts-node": "^10.9.2",
-    "tsup": "8.5",
-    "typescript": "^5.9.2"
+    "protoc": "npx protoc --ts_opt=force_optimize_code_size --ts_out src --proto_path protos protos/econ.proto"
   },
   "module": "dist/index.mjs",
   "jest": {
@@ -56,5 +45,19 @@
     "testMatch": [
       "**/tests/**/*.test.ts"
     ]
+  },
+  "dependencies": {
+    "@protobuf-ts/runtime": "2.11.1",
+    "buffer": "6.0.3",
+    "crc-32": "1.2.2"
+  },
+  "devDependencies": {
+    "@protobuf-ts/plugin": "2.11.1",
+    "@types/jest": "30.0.0",
+    "jest": "30.1.3",
+    "protoc": "32.1.0",
+    "ts-jest": "29.4.3",
+    "tsup": "8.5.0",
+    "typescript": "5.9.2"
   }
 }

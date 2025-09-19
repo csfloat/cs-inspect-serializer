@@ -22,21 +22,16 @@ const generateHex = ({ paintwear = 0.001, ...props }: CEconItemPreviewDataBlock)
 		paintwear: floatToBytes(paintwear),
 	};
 
-	let payload = CEconItemPreviewDataBlock.toBinary(econ);
+	const payload = CEconItemPreviewDataBlock.toBinary(econ);
+	const bufferPayload = Buffer.concat([Uint8Array.from([0]), payload]);
 
-	payload = Buffer.concat([Uint8Array.from([0]), payload]);
-
-	let crc = CRC32.buf(payload);
-
-	const x_crc = (crc & 0xffff) ^ (CEconItemPreviewDataBlock.toBinary(econ).byteLength * crc);
+	const crc = CRC32.buf(bufferPayload);
+	const x_crc = (crc & 0xffff) ^ (payload.byteLength * crc);
 
 	const crcBuffer = Buffer.alloc(4);
-
 	crcBuffer.writeUInt32BE((x_crc & 0xffffffff) >>> 0, 0);
 
-	const buffer = Buffer.concat([payload, crcBuffer]);
-
-	return buffer.toString("hex").toUpperCase();
+	return Buffer.concat([bufferPayload, crcBuffer]).toString("hex").toUpperCase();
 };
 
 /**
