@@ -28,7 +28,6 @@
     "dist"
   ],
   "scripts": {
-    "start:ts": "npx ts-node src/index",
     "build": "tsup",
     "test": "jest",
     "protoc": "npx protoc --ts_out src --proto_path protos protos/econ.proto"
