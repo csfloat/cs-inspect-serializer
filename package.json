@@ -1,5 +1,5 @@
 {
-  "name": "cs2-inspect-serializer",
+  "name": "@csfloat/cs2-inspect-serializer",
   "version": "1.0.0",
   "description": "Lightweight serializer for CS2 inspect links",
   "license": "MIT",
