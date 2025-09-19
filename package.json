@@ -1,6 +1,6 @@
 {
   "name": "@csfloat/cs2-inspect-serializer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight serializer for CS2 inspect links",
   "homepage": "https://github.com/csfloat/cs2-inspect-serializer",
   "bugs": {
