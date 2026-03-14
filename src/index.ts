@@ -1,15 +1,9 @@
 import { CEconItemPreviewDataBlock } from "./econ";
-import CRC32 from "crc-32";
 import { Buffer } from "buffer";
+import { decodeHex, decodeLink } from "./decode";
+import { floatToBytes, getChecksum } from "./inspect-payload";
 
 export const previewLink = "steam://rungame/730/76561202255233023/+csgo_econ_action_preview";
-
-const floatToBytes = (floatValue: number): number => {
-	const floatArray = new Float32Array(1);
-	floatArray[0] = floatValue;
-	const byteArray = new Uint32Array(floatArray.buffer);
-	return byteArray[0];
-};
 
 /**
  * Creates the hex representation of the inspect data
@@ -23,15 +17,10 @@ const generateHex = ({ paintwear = 0.001, ...props }: CEconItemPreviewDataBlock)
 	};
 
 	const payload = CEconItemPreviewDataBlock.toBinary(econ);
-	const bufferPayload = Buffer.concat([Uint8Array.from([0]), payload]);
-
-	const crc = CRC32.buf(bufferPayload);
-	const x_crc = (crc & 0xffff) ^ (payload.byteLength * crc);
-
 	const crcBuffer = Buffer.alloc(4);
-	crcBuffer.writeUInt32BE((x_crc & 0xffffffff) >>> 0, 0);
+	crcBuffer.writeUInt32BE(getChecksum(payload), 0);
 
-	return Buffer.concat([bufferPayload, crcBuffer]).toString("hex").toUpperCase();
+	return Buffer.concat([Uint8Array.from([0]), payload, crcBuffer]).toString("hex").toUpperCase();
 };
 
 /**
@@ -45,4 +34,4 @@ const generateLink = (props: CEconItemPreviewDataBlock): string => {
 	return `${previewLink} ${hex}`;
 };
 
-export { generateHex, generateLink };
+export { decodeHex, decodeLink, generateHex, generateLink, CEconItemPreviewDataBlock };
