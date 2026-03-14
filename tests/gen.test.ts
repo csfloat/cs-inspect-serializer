@@ -123,6 +123,13 @@ describe("CS Inspect Serializer", () => {
 			expect(decoded).toEqual(props);
 		});
 
+		it("should reject generated hex with an invalid checksum", () => {
+			const hex = generateHex(props);
+			const invalidHex = `${hex.slice(0, -1)}${hex.endsWith("0") ? "1" : "0"}`;
+
+			expect(() => decodeHex(invalidHex)).toThrow("Inspect hex checksum mismatch");
+		});
+
 		it("should decode URL-encoded inspect links", () => {
 			const decoded = decodeLink(encodeURI(generateLink(props)));
 
@@ -243,6 +250,10 @@ describe("CS Inspect Serializer", () => {
 			expect(decoded.paintwear).toBeUndefined();
 			expect(decoded.stickers).toEqual([]);
 			expect(decoded.keychains).toEqual([{ slot: 0, stickerId: 36, highlightReel: 345 }]);
+		});
+
+		it("should reject arbitrary hex that only looks like a protobuf message", () => {
+			expect(() => decodeHex("859F6DF769919C54")).toThrow("Invalid inspect hex payload");
 		});
 	});
 });

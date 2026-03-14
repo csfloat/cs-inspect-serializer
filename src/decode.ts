@@ -9,7 +9,7 @@ const normalizeDecodedEcon = (econ: CEconItemPreviewDataBlock): CEconItemPreview
 	};
 };
 
-const isDecodedInspectPayload = (econ: CEconItemPreviewDataBlock): boolean => {
+const hasDecodedInspectPayload = (econ: CEconItemPreviewDataBlock): boolean => {
 	return (
 		econ.itemid !== undefined ||
 		econ.defindex !== undefined ||
@@ -48,45 +48,58 @@ const extractHexFromLink = (link: string): string => {
 	throw new Error("Invalid inspect link");
 };
 
-const decodePayload = (payload: Uint8Array): CEconItemPreviewDataBlock => {
+const decodePayload = (
+	payload: Uint8Array,
+	isValidPayload: (econ: CEconItemPreviewDataBlock) => boolean
+): CEconItemPreviewDataBlock => {
 	const econ = normalizeDecodedEcon(CEconItemPreviewDataBlock.fromBinary(payload));
 
-	if (!isDecodedInspectPayload(econ)) {
+	if (!isValidPayload(econ)) {
 		throw new Error("Invalid inspect hex payload");
 	}
 
 	return econ;
 };
 
-const decodeBuffer = (buffer: Buffer, validateChecksum: boolean): CEconItemPreviewDataBlock => {
+const decodeWrappedBuffer = (buffer: Buffer): CEconItemPreviewDataBlock => {
 	if (buffer.length < 5 || buffer[0] !== 0) {
 		throw new Error("Invalid inspect hex payload");
 	}
 
 	const payload = buffer.subarray(1, -4);
 
-	if (validateChecksum) {
-		const expectedChecksum = buffer.readUInt32BE(buffer.length - 4);
-		const actualChecksum = getChecksum(payload);
+	const expectedChecksum = buffer.readUInt32BE(buffer.length - 4);
+	const actualChecksum = getChecksum(payload);
 
-		if (expectedChecksum !== actualChecksum) {
-			throw new Error("Inspect hex checksum mismatch");
-		}
+	if (expectedChecksum !== actualChecksum) {
+		throw new Error("Inspect hex checksum mismatch");
 	}
 
-	return decodePayload(payload);
+	return decodePayload(payload, hasDecodedInspectPayload);
 };
 
-const unwrapMaskedPayload = (buffer: Buffer): Uint8Array => {
-	if (buffer.length >= 5 && buffer[0] === 0) {
-		return buffer.subarray(1, -4);
-	}
-
-	return buffer;
+const isDecodedMaskedInspectPayload = (econ: CEconItemPreviewDataBlock): boolean => {
+	return (
+		econ.itemid !== undefined &&
+		econ.defindex !== undefined &&
+		econ.paintindex !== undefined &&
+		econ.inventory !== undefined &&
+		econ.origin !== undefined
+	);
 };
 
 const decodeMaskedBuffer = (buffer: Buffer): CEconItemPreviewDataBlock => {
-	return decodePayload(unwrapMaskedPayload(buffer));
+	if (buffer.length < 5) {
+		throw new Error("Invalid inspect hex payload");
+	}
+
+	const unmaskedBuffer = xorMaskBuffer(buffer, buffer[0]);
+
+	if (unmaskedBuffer[0] !== 0) {
+		throw new Error("Invalid inspect hex payload");
+	}
+
+	return decodePayload(unmaskedBuffer.subarray(1, -4), isDecodedMaskedInspectPayload);
 };
 
 const xorMaskBuffer = (buffer: Buffer, key: number): Buffer => {
@@ -98,23 +111,12 @@ export const decodeHex = (hex: string): CEconItemPreviewDataBlock => {
 	assertValidHex(normalizedHex);
 
 	const buffer = Buffer.from(normalizedHex, "hex");
-	const candidates = [
-		() => decodeBuffer(buffer, true),
-		() => decodeMaskedBuffer(buffer),
-		() => decodeMaskedBuffer(xorMaskBuffer(buffer, buffer[0])),
-	];
 
-	let lastError: unknown;
-
-	for (const candidate of candidates) {
-		try {
-			return candidate();
-		} catch (error) {
-			lastError = error;
-		}
+	if (buffer[0] === 0) {
+		return decodeWrappedBuffer(buffer);
 	}
 
-	throw lastError instanceof Error ? lastError : new Error("Invalid inspect hex payload");
+	return decodeMaskedBuffer(buffer);
 };
 
 export const decodeLink = (link: string): CEconItemPreviewDataBlock => {
