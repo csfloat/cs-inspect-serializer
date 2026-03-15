@@ -87,6 +87,18 @@ interface CEconItemPreviewDataBlock {
      * @generated from protobuf field: repeated CEconItemPreviewDataBlock.Sticker keychains = 20
      */
     keychains: CEconItemPreviewDataBlock_Sticker[];
+    /**
+     * @generated from protobuf field: optional uint32 style = 21
+     */
+    style?: number;
+    /**
+     * @generated from protobuf field: repeated CEconItemPreviewDataBlock.Sticker variations = 22
+     */
+    variations: CEconItemPreviewDataBlock_Sticker[];
+    /**
+     * @generated from protobuf field: optional uint32 upgrade_level = 23
+     */
+    upgradeLevel?: number;
 }
 /**
  * @generated MessageType for protobuf message CEconItemPreviewDataBlock
@@ -143,6 +155,10 @@ interface CEconItemPreviewDataBlock_Sticker {
      * @generated from protobuf field: optional uint32 highlight_reel = 11
      */
     highlightReel?: number;
+    /**
+     * @generated from protobuf field: optional uint32 wrapped_sticker = 12
+     */
+    wrappedSticker?: number;
 }
 /**
  * @generated MessageType for protobuf message CEconItemPreviewDataBlock.Sticker

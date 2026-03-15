@@ -86,6 +86,18 @@ export interface CEconItemPreviewDataBlock {
      * @generated from protobuf field: repeated CEconItemPreviewDataBlock.Sticker keychains = 20
      */
     keychains: CEconItemPreviewDataBlock_Sticker[];
+    /**
+     * @generated from protobuf field: optional uint32 style = 21
+     */
+    style?: number;
+    /**
+     * @generated from protobuf field: repeated CEconItemPreviewDataBlock.Sticker variations = 22
+     */
+    variations: CEconItemPreviewDataBlock_Sticker[];
+    /**
+     * @generated from protobuf field: optional uint32 upgrade_level = 23
+     */
+    upgradeLevel?: number;
 }
 /**
  * @generated from protobuf message CEconItemPreviewDataBlock.Sticker
@@ -135,6 +147,10 @@ export interface CEconItemPreviewDataBlock_Sticker {
      * @generated from protobuf field: optional uint32 highlight_reel = 11
      */
     highlightReel?: number;
+    /**
+     * @generated from protobuf field: optional uint32 wrapped_sticker = 12
+     */
+    wrappedSticker?: number;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class CEconItemPreviewDataBlock$Type extends MessageType<CEconItemPreviewDataBlock> {
@@ -159,7 +175,10 @@ class CEconItemPreviewDataBlock$Type extends MessageType<CEconItemPreviewDataBlo
             { no: 17, name: "musicindex", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ },
             { no: 18, name: "entindex", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
             { no: 19, name: "petindex", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ },
-            { no: 20, name: "keychains", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => CEconItemPreviewDataBlock_Sticker }
+            { no: 20, name: "keychains", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => CEconItemPreviewDataBlock_Sticker },
+            { no: 21, name: "style", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ },
+            { no: 22, name: "variations", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => CEconItemPreviewDataBlock_Sticker },
+            { no: 23, name: "upgrade_level", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ }
         ]);
     }
 }
@@ -181,7 +200,8 @@ class CEconItemPreviewDataBlock_Sticker$Type extends MessageType<CEconItemPrevie
             { no: 8, name: "offset_y", kind: "scalar", opt: true, T: 2 /*ScalarType.FLOAT*/ },
             { no: 9, name: "offset_z", kind: "scalar", opt: true, T: 2 /*ScalarType.FLOAT*/ },
             { no: 10, name: "pattern", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ },
-            { no: 11, name: "highlight_reel", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ }
+            { no: 11, name: "highlight_reel", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ },
+            { no: 12, name: "wrapped_sticker", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ }
         ]);
     }
 }

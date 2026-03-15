@@ -190,7 +190,24 @@ var CEconItemPreviewDataBlock$Type = class extends import_runtime.MessageType {
         T: 13
         /*ScalarType.UINT32*/
       },
-      { no: 20, name: "keychains", kind: "message", repeat: 2, T: () => CEconItemPreviewDataBlock_Sticker }
+      { no: 20, name: "keychains", kind: "message", repeat: 2, T: () => CEconItemPreviewDataBlock_Sticker },
+      {
+        no: 21,
+        name: "style",
+        kind: "scalar",
+        opt: true,
+        T: 13
+        /*ScalarType.UINT32*/
+      },
+      { no: 22, name: "variations", kind: "message", repeat: 2, T: () => CEconItemPreviewDataBlock_Sticker },
+      {
+        no: 23,
+        name: "upgrade_level",
+        kind: "scalar",
+        opt: true,
+        T: 13
+        /*ScalarType.UINT32*/
+      }
     ]);
   }
 };
@@ -285,6 +302,14 @@ var CEconItemPreviewDataBlock_Sticker$Type = class extends import_runtime.Messag
         opt: true,
         T: 13
         /*ScalarType.UINT32*/
+      },
+      {
+        no: 12,
+        name: "wrapped_sticker",
+        kind: "scalar",
+        opt: true,
+        T: 13
+        /*ScalarType.UINT32*/
       }
     ]);
   }
@@ -327,7 +352,7 @@ var normalizeDecodedEcon = (econ) => {
   };
 };
 var hasDecodedInspectPayload = (econ) => {
-  return econ.itemid !== void 0 || econ.defindex !== void 0 || econ.paintindex !== void 0 || econ.paintseed !== void 0 || econ.stickers.length > 0 || econ.keychains.length > 0;
+  return econ.itemid !== void 0 || econ.defindex !== void 0 || econ.paintindex !== void 0 || econ.paintseed !== void 0 || econ.stickers.length > 0 || econ.keychains.length > 0 || econ.variations.length > 0;
 };
 var assertValidHex = (hex) => {
   if (!/^[0-9A-F]+$/i.test(hex) || hex.length % 2 !== 0) {

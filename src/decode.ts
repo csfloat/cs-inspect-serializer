@@ -16,7 +16,8 @@ const hasDecodedInspectPayload = (econ: CEconItemPreviewDataBlock): boolean => {
 		econ.paintindex !== undefined ||
 		econ.paintseed !== undefined ||
 		econ.stickers.length > 0 ||
-		econ.keychains.length > 0
+		econ.keychains.length > 0 ||
+		econ.variations.length > 0
 	);
 };
 
