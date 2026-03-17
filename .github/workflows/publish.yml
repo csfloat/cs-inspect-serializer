@@ -37,7 +37,7 @@ jobs:
 
             - name: Publish to GitHub Packages
               run: |
-                  npm publish --access public --registry=https://npm.pkg.github.com --scope=@csfloat
+                  npm publish --access private --registry=https://npm.pkg.github.com --scope=@csfloat
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
