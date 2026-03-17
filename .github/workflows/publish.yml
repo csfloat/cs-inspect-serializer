@@ -35,14 +35,25 @@ jobs:
             - name: Build library
               run: npm run build
 
+            - name: Setup GitHub Packages auth
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22"
+                  registry-url: https://npm.pkg.github.com
+                  scope: "@csfloat"
+
             - name: Publish to GitHub Packages
-              run: |
-                  npm publish --access private --registry=https://npm.pkg.github.com --scope=@csfloat
+              run: npm publish --access restricted
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: Setup npm auth
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22"
+                  registry-url: https://registry.npmjs.org
+
             - name: Publish to npm
-              run: |
-                  npm publish --access public --registry=https://registry.npmjs.org
+              run: npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
