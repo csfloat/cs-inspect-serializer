@@ -10,6 +10,7 @@ describe("CS Inspect Serializer", () => {
 		rarity: 6,
 		stickers: [],
 		keychains: [],
+		variations: [],
 	};
 
 	describe("Hex Generation", () => {
@@ -44,6 +45,7 @@ describe("CS Inspect Serializer", () => {
 					},
 				],
 				keychains: [],
+				variations: [],
 			});
 			expect(hex).toBe("00180720C80A280638A4E1F5FB03409A0562040800104C62040801104C62040802104C62040803104C6D4F5E30");
 		});
@@ -57,6 +59,7 @@ describe("CS Inspect Serializer", () => {
 				rarity: 4,
 				stickers: [],
 				keychains: [],
+				variations: [],
 			});
 			expect(hex).toMatch(/^[0-9A-F]+$/i); // Should be a valid hex string
 		});
@@ -84,6 +87,7 @@ describe("CS Inspect Serializer", () => {
 					},
 				],
 				keychains: [],
+				variations: [],
 			};
 			const link = generateLink(props);
 
@@ -102,6 +106,7 @@ describe("CS Inspect Serializer", () => {
 				rarity: 1,
 				stickers: [],
 				keychains: [],
+				variations: [],
 			});
 			expect(hex).toMatch(/^[0-9A-F]+$/i);
 		});
@@ -254,6 +259,17 @@ describe("CS Inspect Serializer", () => {
 
 		it("should reject arbitrary hex that only looks like a protobuf message", () => {
 			expect(() => decodeHex("859F6DF769919C54")).toThrow("Invalid inspect hex payload");
+		});
+
+		it("should decode wrapped sticker and offsets", () => {
+			const link = "steam://rungame/730/76561202255233023/+csgo_econ_action_preview%200018082086012804300438FEFED4FA024094046209080010461D000000006213080110461D000000003D201CCA3C4500E9743B6213080210461D000000003D98AE883D450069793C6209080410461D000000006213080410461D000000003D646E393D45D402ABBDA2011A080010251D000000003DAEB1B6BE4529093A3F4D0825CC4060460D207F2C";
+			const decoded = decodeLink(link);
+
+			expect(decoded).not.toBeUndefined();
+			expect(decoded.keychains[0].wrappedSticker).toEqual(70);
+			expect(decoded.keychains[0].offsetX).toBeLessThan(0);
+			expect(decoded.keychains[0].offsetY).toBeGreaterThan(0);
+			expect(decoded.stickers.length).toEqual(5);
 		});
 	});
 });
