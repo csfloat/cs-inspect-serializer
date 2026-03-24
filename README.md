@@ -24,6 +24,7 @@ const props = {
 	rarity: 6,
 	stickers: [],
 	keychains: [],
+	variations: [],
 };
 
 const hex = generateHex(props);
